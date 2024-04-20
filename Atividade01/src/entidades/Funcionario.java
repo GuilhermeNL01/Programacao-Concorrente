@@ -14,32 +14,26 @@ public class Funcionario extends Thread {
     }
 
     public void run() {
-        while (true) {
+        synchronized (contaSalario) {
             try {
-                Thread.sleep(1000); // Simula o tempo entre os salários
-                double salarioLiquido = salario * 0.8; // Desconta 20% para o investimento
-                synchronized (contaSalario) {
-                    contaSalario.creditar(salarioLiquido);
-                    contaInvestimento.creditar(salario * 0.2);
-                    System.out.println("Salário de R$" + salarioLiquido + " recebido por " + nome);
-                }
+                Thread.sleep(2000); // Simula o tempo de processamento de pagamento
+                contaInvestimento.creditar(salario * 0.2);
+                System.out.println(nome + " investiu R$ " + (salario * 0.2) + " em sua conta de investimentos.");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public String getNome() {
-        return nome;
-    }
-
     public double getSalario() {
         return salario;
     }
 
-    public void receberSalario(double valor) {
-        synchronized (contaSalario) {
-            contaSalario.creditar(valor);
-        }
+    public String getNome() {
+        return nome;
+    }
+
+    public void receberSalario() {
+        contaSalario.creditar(salario);
     }
 }

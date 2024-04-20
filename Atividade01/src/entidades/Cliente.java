@@ -1,6 +1,10 @@
 package entidades;
 
+import java.util.Random;
+
 public class Cliente extends Thread {
+    private static final double SALDO_INICIAL = 1000.0;
+    private static final double[] VALORES_COMPRA = {100.0, 200.0};
     private String nome;
     private Conta conta;
     private Loja[] lojas;
@@ -12,25 +16,32 @@ public class Cliente extends Thread {
     }
 
     public void run() {
-        while (true) {
-            try {
-                Thread.sleep(1000); // Simula o tempo entre as compras
-                double valorCompra = Math.random() < 0.5 ? 100 : 200;
-                Loja loja = lojas[(int) (Math.random() * lojas.length)];
-                synchronized (conta) {
-                    if (conta.getSaldo() >= valorCompra) {
-                        conta.debitar(valorCompra);
-                        loja.pagarFuncionario(this);
-                        System.out.println("Compra de R$" + valorCompra + " realizada por " + nome +
-                                " na loja " + loja);
-                    } else {
-                        System.out.println("Saldo insuficiente para " + nome + " realizar compra");
-                        break;
+        Random random = new Random();
+        while (conta.getSaldo() > 0) {
+            double valorCompra = VALORES_COMPRA[random.nextInt(VALORES_COMPRA.length)];
+            Loja loja = lojas[random.nextInt(lojas.length)];
+            synchronized (loja) {
+                if (conta.getSaldo() >= valorCompra) {
+                    conta.debitar(valorCompra);
+                    // Simula o tempo de compra
+                    try {
+                        Thread.sleep(500); // 0.5 segundo de atraso
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                    System.out.println("Cliente " + nome + " comprou na loja " + loja.hashCode() + " no valor de R$ " + valorCompra);
+                } else {
+                    System.out.println("Saldo insuficiente para cliente " + nome);
+                    break;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
+        // Simula o tempo de finalização das compras
+        try {
+            Thread.sleep(1000); // 1 segundo de atraso
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Cliente " + nome + " finalizou suas compras.");
     }
 }

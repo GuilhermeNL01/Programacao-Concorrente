@@ -8,13 +8,12 @@ public class Loja {
     }
 
     public synchronized void pagarFuncionario(Funcionario funcionario) {
-        double salario = funcionario.getSalario();
-        if (conta.getSaldo() >= salario) {
-            conta.debitar(salario);
-            funcionario.receberSalario(salario);
-            System.out.println("Pagamento de R$" + salario + " para " + funcionario.getNome() + " realizado");
+        if (conta.getSaldo() >= funcionario.getSalario()) {
+            conta.debitar(funcionario.getSalario());
+            funcionario.receberSalario();
+            System.out.println("Funcionário " + funcionario.getNome() + " pago com sucesso.");
         } else {
-            System.out.println("Saldo insuficiente para pagar " + funcionario.getNome());
+            System.out.println("Saldo insuficiente para pagar o funcionário " + funcionario.getNome());
         }
     }
 }

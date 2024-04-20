@@ -9,19 +9,19 @@ public class Conta {
         this.saldo = saldo;
     }
 
-    public synchronized void creditar(double valor) {
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void creditar(double valor) {
         saldo += valor;
     }
 
-    public synchronized void debitar(double valor) {
+    public void debitar(double valor) {
         saldo -= valor;
     }
 
     public String getTitular() {
         return titular;
-    }
-
-    public double getSaldo() {
-        return saldo;
     }
 }
