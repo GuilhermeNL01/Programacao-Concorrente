@@ -7,13 +7,20 @@ public class Loja {
         this.conta = conta;
     }
 
-    public synchronized void pagarFuncionario(Funcionario funcionario) {
-        if (conta.getSaldo() >= funcionario.getSalario()) {
-            conta.debitar(funcionario.getSalario());
-            funcionario.receberSalario();
-            System.out.println("Funcionário " + funcionario.getNome() + " pago com sucesso.");
-        } else {
-            System.out.println("Saldo insuficiente para pagar o funcionário " + funcionario.getNome());
+    public boolean pagarFuncionario(Funcionario funcionario) {
+        synchronized (conta) {
+            double salario = funcionario.getSalario();
+            if (conta.getSaldo() >= salario) {
+                conta.debitar(salario);
+                // Transferir fundos da conta da loja para a conta de salário do funcionário
+                Banco.transferir(conta, funcionario.getContaSalario(), salario);
+                funcionario.receberSalario();
+                System.out.println("Funcionário " + funcionario.getNome() + " pago com sucesso.");
+                return true; // Pagamento bem-sucedido
+            } else {
+                System.out.println("Saldo insuficiente para pagar o funcionário " + funcionario.getNome());
+                return false; // Pagamento mal-sucedido
+            }
         }
     }
 }
