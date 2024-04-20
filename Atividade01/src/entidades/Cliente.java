@@ -3,26 +3,30 @@ package entidades;
 import java.util.Random;
 
 public class Cliente extends Thread {
-    private static final double SALDO_INICIAL = 1000.0;
-    private static final double[] VALORES_COMPRA = {100.0, 200.0};
-    private String nome;
-    private Conta conta;
-    private Loja[] lojas;
+    private static final double SALDO_INICIAL = 1000.0; // Saldo inicial do cliente
+    private static final double[] VALORES_COMPRA = {100.0, 200.0}; // Valores possíveis para as compras
+    private String nome; // Nome do cliente
+    private Conta conta; // Conta do cliente
+    private Loja[] lojas; // Array de lojas disponíveis para compras
 
+    // Construtor da classe Cliente
     public Cliente(String nome, Conta conta, Loja[] lojas) {
         this.nome = nome;
         this.conta = conta;
         this.lojas = lojas;
     }
 
+    // Método para execução da thread
     public void run() {
         Random random = new Random();
+        // Loop enquanto o cliente tiver saldo na conta
         while (conta.getSaldo() > 0) {
-            double valorCompra = VALORES_COMPRA[random.nextInt(VALORES_COMPRA.length)];
-            Loja loja = lojas[random.nextInt(lojas.length)];
+            double valorCompra = VALORES_COMPRA[random.nextInt(VALORES_COMPRA.length)]; // Valor da compra aleatório
+            Loja loja = lojas[random.nextInt(lojas.length)]; // Seleciona uma loja aleatória
             synchronized (loja) {
+                // Verifica se há saldo suficiente na conta para a compra
                 if (conta.getSaldo() >= valorCompra) {
-                    conta.debitar(valorCompra);
+                    conta.debitar(valorCompra); // Debita o valor da compra da conta
                     // Simula o tempo de compra
                     try {
                         Thread.sleep(500); // 0.5 segundo de atraso
