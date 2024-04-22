@@ -15,6 +15,9 @@ public class Cliente extends Thread {
         this.conta = conta;
         this.lojas = lojas;
     }
+    public Conta getConta() {
+        return conta;
+    }
 
     // Método para execução da thread
     public void run() {
@@ -40,6 +43,7 @@ public class Cliente extends Thread {
                 }
             }
         }
+
         // Simula o tempo de finalização das compras
         try {
             Thread.sleep(1000); // 1 segundo de atraso

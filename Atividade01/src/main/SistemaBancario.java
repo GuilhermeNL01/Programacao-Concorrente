@@ -28,5 +28,28 @@ public class SistemaBancario {
         for (Cliente cliente : clientes) {
             cliente.start();
         }
+
+        // Verifica se a soma dos saldos dos clientes é inferior à soma dos salários dos funcionários
+        double somaSaldosClientes = 0;
+        for (Cliente cliente : clientes) {
+            somaSaldosClientes += cliente.getConta().getSaldo();
+        }
+        double somaSalariosFuncionarios = funcionario1.getSalario() + funcionario2.getSalario();
+        if (somaSaldosClientes >= somaSalariosFuncionarios) {
+            System.out.println("A soma dos saldos dos clientes é suficiente para pagar os salários dos funcionários.");
+        } else {
+            System.out.println("A soma dos saldos dos clientes é insuficiente para pagar os salários dos funcionários.");
+        }
+
+        // Verifica se alguma loja tem R$ 1400 em caixa e paga um funcionário que ainda não recebeu o salário
+        if (contaLoja1.getSaldo() >= 1400) {
+            if (!loja1.pagarFuncionario(funcionario1)) {
+                loja1.pagarFuncionario(funcionario2);
+            }
+        } else if (contaLoja2.getSaldo() >= 1400) {
+            if (!loja2.pagarFuncionario(funcionario1)) {
+                loja2.pagarFuncionario(funcionario2);
+            }
+        }
     }
 }
