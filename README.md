@@ -26,4 +26,4 @@ Contribuições são bem-vindas! Para contribuir com este projeto, siga estas et
 
 ## Sobre o Autor
 
-Este repositório é mantido por [Guilherme Nunes Lobo]. Entre em contato se tiver alguma dúvida ou sugestão.
+Este repositório é mantido por Guilherme Nunes Lobo. Entre em contato se tiver alguma dúvida ou sugestão.
